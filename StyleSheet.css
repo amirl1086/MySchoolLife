@@ -1,0 +1,258 @@
+
+body {
+    margin: auto;
+    padding: 20px;
+    background-color: antiquewhite;
+}
+
+.pageWrapper {
+    width: 820px;
+    height: 1020px;
+    margin: auto;
+    padding: 15px;
+    box-shadow: 1px 1px 25px darkslateblue;
+    border-radius: 50px 1px 50px 1px;
+    background-color: white;
+    border: 10px double #14396A;
+}
+
+header {
+    width: 90%;
+    height: 100px;
+    margin: 8px auto 10px auto;
+    box-shadow: 1px 1px 25px #7075FF;
+    border-radius: 50px 1px 50px 1px;
+    background-color: aquamarine;
+    border: 10px double darkslateblue;
+    text-align: center;
+    font-family: "Tahoma", "Geneva", sans-serif;
+    font-size: 76px;
+    font-weight: bold;
+    color: indigo;
+    font-style: oblique;
+    font-variant: small-caps;
+    letter-spacing: 4px;
+}
+
+.slideMenu {
+    width: 15%;
+
+    display: inline;
+    float: left;
+    margin-left: 22px;
+    margin-top: 14px;
+}
+
+.slideMenuButton {
+    width: 93%;
+}
+
+.slideMenuButton, .slideMenu {
+    height: 35px;
+    font-family: 'trebuchet ms', sans-serif;
+    font-weight: bold;
+    color: #14396A;
+    font-size: 18px;
+    text-shadow: 3px 3px 1px #7CACDE;
+    text-align: center;
+    box-shadow: 2px 2px 2px #BEE2F9;
+    padding-top: 11px;
+    border-radius: 10px;
+    border: 2px groove #3866A3;
+    background: #63B8EE;
+    background: -ms-linear-gradient(top,  #63B8EE,  #468CCF);
+    background: -webkit-gradient(linear, left top, left bottom, from(#63B8EE), to(#468CCF));
+}
+
+.slideMenuButton:hover, .slideMenu:hover {
+    cursor: pointer;
+    color: #14396A;
+    background: #468CCF;
+    background: -ms-linear-gradient(top,  #468CCF,  #63B8EE);
+    background: -webkit-gradient(linear, left top, left bottom, from(#468CCF), to(#63B8EE));
+}
+
+.navigationBar {
+    width: 76%;
+    height: 70px;
+    display: inline;
+    float: right;
+    margin: 1px auto 15px auto;
+    border-radius: 50px 1px 50px 1px;
+    border: solid;
+    background-color: rgba(0, 137, 255, 1);
+    color: rgba(0, 137, 255, 1);
+    box-shadow:-3px -3px 10px #312C80;
+}
+
+.navigationButton {
+    padding: 10px 5px 10px 5px;
+    width: 100px;
+    margin: 3px 7px 3px 7px;
+}
+
+.navigationButtonLeft {
+    width: 120px;
+    margin: 3px 7px 3px 18px;
+    border-radius: 50px 1px 1px 1px;
+    padding: 10px 5px 10px 15px;
+}
+
+.navigationButtonRight {
+    width: 140px;
+    margin: 3px 7px 3px 7px;
+    border-radius: 1px 1px 50px 1px;
+    padding: 10px 15px 10px 5px;
+}
+
+.navigationButton, .navigationButtonLeft, .navigationButtonRight {
+
+    height: 34px;
+    display: inline;
+    float: left;
+    text-align: center;
+    font-family: verdana, sans-serif;
+    font-weight: bold;
+    color: #14396A;
+    font-size: 15px;
+    text-shadow: 1px 1px 1px #7CACDE;
+    box-shadow: 1px 1px 10px #000000;
+    border: 2px solid #3866A3;
+    background: #72EE97;
+}
+
+.navigationButton:hover, .navigationButtonLeft:hover, .navigationButtonRight:hover {
+    cursor: pointer;
+    color: #14396A;
+    background: #7ECFBF;
+}
+
+.dropDown {
+    width: 180px;
+    display: none;
+    position: absolute;
+    margin-left: 20px;
+    margin-top: 63px;
+}
+
+.mainSection {
+    clear: both;
+    width: 95%;
+    height: 520px;
+    margin: 1px auto 10px auto;
+}
+
+#calendar {
+    width: 75%;
+    height: 100%;
+    text-align: center;
+    font-size: 20px;
+    box-shadow:1px 1px 25px 8px #1C1880;
+    color: #333;
+    font-family: Helvetica, Arial, sans-serif;
+    border-collapse: collapse; border-spacing: 0;
+}
+
+#prevMonth {
+    background: url("misc/arrow-green-left.png") no-repeat center;
+}
+
+#nextMonth {
+    background: url("misc/arrow-green-right.png") no-repeat center;
+}
+
+#prevMonth, #nextMonth {
+    width: 7%;
+    height: 100%;
+    margin: auto;
+    cursor: pointer;
+}
+
+#prevMonth, #nextMonth, #calendar {
+    display: inline-block;
+    margin: 1px 11px 1px 11px;
+}
+
+.lowerSection {
+    width: 80%;
+    height: 130px;
+    margin: auto;
+    border-style: solid;
+}
+
+.tasksForm {
+    padding: 15px 20px 50px 20px;
+    margin: 10px;
+    font-size: 20px;
+}
+
+#textArea {
+    resize: none;
+    width: 300px;
+    height: 50px;
+}
+
+footer {
+    width: 90%;
+    height: 90px;
+    margin: 20px auto 20px auto;
+    border-style: solid;
+}
+
+.todayPlan {
+    width: 55%;
+    height: 100%;
+    display: block;
+    float: left;
+    border-style: solid;
+}
+
+.log {
+    width: 40%;
+    height: 100%;
+    display: block;
+    float: right;
+    overflow:auto;
+
+    border-style: solid;
+}
+
+#calendarTable {
+    width: 100%;
+    height: 100%;
+    font-family: Algerian sans-serif;
+}
+
+#scheduleTable {
+    width: 100%;
+    height: 100%;
+    font-family: Algerian sans-serif;
+}
+
+#popUpWindow {
+    width: 380px;
+    height: 220px;
+    display: none; /* Hidden by default */
+    position: fixed;
+    margin: 50px 30px 40px 94px;
+    background-color: white;
+    border: solid;
+}
+
+#busyDayButton {
+    background-color: crimson;
+}
+
+#examButton {
+    background-color: #1C1880;
+}
+
+#assignmentButton {
+    background-color: darkolivegreen;
+}
+
+#assignmentButton, #busyDayButton, #examButton {
+    cursor: pointer;
+    color: honeydew;
+}
+
