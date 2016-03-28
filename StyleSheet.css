@@ -1,13 +1,17 @@
+/* CSS File - the design */
+/* ===================== */
 
+/* general body properties */
 body {
     margin: auto;
-    padding: 20px;
+    padding: 25px;
     background-color: antiquewhite;
 }
 
+/* the website box */
 .pageWrapper {
-    width: 820px;
-    height: 1020px;
+    width: 920px;
+    height: auto;
     margin: auto;
     padding: 15px;
     box-shadow: 1px 1px 25px darkslateblue;
@@ -16,10 +20,11 @@ body {
     border: 10px double #14396A;
 }
 
+/* the header box */
 header {
     width: 90%;
     height: 100px;
-    margin: 8px auto 10px auto;
+    margin: 8px auto 15px auto;
     box-shadow: 1px 1px 25px #7075FF;
     border-radius: 50px 1px 50px 1px;
     background-color: aquamarine;
@@ -34,19 +39,66 @@ header {
     letter-spacing: 4px;
 }
 
-.slideMenu {
-    width: 15%;
-
+/* navigation bar and buttons design */
+.navigationBar {
+    width: 68%;
+    height: 70px;
     display: inline;
     float: left;
-    margin-left: 22px;
-    margin-top: 14px;
+    margin-top: 10px;
+    border-radius: 50px 1px 50px 1px;
+    border: solid;
+    background-color: rgba(0, 137, 255, 1);
+    color: rgba(0, 137, 255, 1);
+    box-shadow:-3px -3px 10px #312C80;
+}
+.navigationButton {
+    padding: 10px 5px 10px 5px;
+    width: 100px;
+}
+.navigationButtonLeft {
+    width: 120px;
+    margin: 3px 7px 3px 18px;
+    padding: 10px 5px 10px 15px;
+    border-radius: 50px 1px 1px 1px;
+}
+.navigationButtonRight {
+    width: 140px;
+    margin: 3px 7px 3px 7px;
+    padding: 10px 15px 10px 5px;
+    border-radius: 1px 1px 50px 1px;
+}
+.navigationButton, .navigationButtonLeft, .navigationButtonRight {
+    height: 34px;
+    margin: 6px 7px 3px 14px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    font-family: verdana, sans-serif;
+    font-weight: bold;
+    color: #14396A;
+    font-size: 15px;
+    text-shadow: 1px 1px 1px #7CACDE;
+    box-shadow: 1px 1px 10px #000000;
+    border: 2px solid #3866A3;
+    background: #72EE97;
+}
+.navigationButton:hover, .navigationButtonLeft:hover, .navigationButtonRight:hover {
+    cursor: pointer;
+    color: #14396A;
+    background: #7ECFBF;
 }
 
+/* drop down menu */
+.slideMenu {
+    width: 15%;
+    margin: 15px 60px 10px 10px;
+    display: inline;
+    float: right;
+}
 .slideMenuButton {
     width: 93%;
 }
-
 .slideMenuButton, .slideMenu {
     height: 35px;
     font-family: 'trebuchet ms', sans-serif;
@@ -63,7 +115,6 @@ header {
     background: -ms-linear-gradient(top,  #63B8EE,  #468CCF);
     background: -webkit-gradient(linear, left top, left bottom, from(#63B8EE), to(#468CCF));
 }
-
 .slideMenuButton:hover, .slideMenu:hover {
     cursor: pointer;
     color: #14396A;
@@ -71,127 +122,125 @@ header {
     background: -ms-linear-gradient(top,  #468CCF,  #63B8EE);
     background: -webkit-gradient(linear, left top, left bottom, from(#468CCF), to(#63B8EE));
 }
-
-.navigationBar {
-    width: 76%;
-    height: 70px;
-    display: inline;
-    float: right;
-    margin: 1px auto 15px auto;
-    border-radius: 50px 1px 50px 1px;
-    border: solid;
-    background-color: rgba(0, 137, 255, 1);
-    color: rgba(0, 137, 255, 1);
-    box-shadow:-3px -3px 10px #312C80;
-}
-
-.navigationButton {
-    padding: 10px 5px 10px 5px;
-    width: 100px;
-    margin: 3px 7px 3px 7px;
-}
-
-.navigationButtonLeft {
-    width: 120px;
-    margin: 3px 7px 3px 18px;
-    border-radius: 50px 1px 1px 1px;
-    padding: 10px 5px 10px 15px;
-}
-
-.navigationButtonRight {
-    width: 140px;
-    margin: 3px 7px 3px 7px;
-    border-radius: 1px 1px 50px 1px;
-    padding: 10px 15px 10px 5px;
-}
-
-.navigationButton, .navigationButtonLeft, .navigationButtonRight {
-
-    height: 34px;
-    display: inline;
-    float: left;
-    text-align: center;
-    font-family: verdana, sans-serif;
-    font-weight: bold;
-    color: #14396A;
-    font-size: 15px;
-    text-shadow: 1px 1px 1px #7CACDE;
-    box-shadow: 1px 1px 10px #000000;
-    border: 2px solid #3866A3;
-    background: #72EE97;
-}
-
-.navigationButton:hover, .navigationButtonLeft:hover, .navigationButtonRight:hover {
-    cursor: pointer;
-    color: #14396A;
-    background: #7ECFBF;
-}
-
 .dropDown {
     width: 180px;
     display: none;
     position: absolute;
-    margin-left: 20px;
-    margin-top: 63px;
+    z-index: 2;
+    margin: 64px auto auto 718px;
+    float: right;
 }
 
+/* the main section box */
 .mainSection {
-    clear: both;
     width: 95%;
-    height: 520px;
-    margin: 1px auto 10px auto;
+    min-height: 520px;
+    margin: 132px auto 35px auto;
+    clear: both;
+    z-index: 1;
 }
 
+/* the months changing arrows and the calendar box */
+#prevMonth {
+    background: url("misc/arrow-green-left.png") no-repeat center;
+}
+#nextMonth {
+    background: url("misc/arrow-green-right.png") no-repeat center;
+}
+#prevMonth, #nextMonth {
+    width: 7%;
+    height: 500px;
+    cursor: pointer;
+}
 #calendar {
     width: 75%;
     height: 100%;
     text-align: center;
+    position: relative;
     font-size: 20px;
     box-shadow:1px 1px 25px 8px #1C1880;
     color: #333;
-    font-family: Helvetica, Arial, sans-serif;
     border-collapse: collapse; border-spacing: 0;
 }
-
-#prevMonth {
-    background: url("misc/arrow-green-left.png") no-repeat center;
+#calendarTable {
+    width: 100%;
+    height: 520px;
+    font-family: Impact, sans serif;
+    font-size: 20px;
+    font-variant: normal;
+    text-align: center;
+    font-weight: 500;
+    text-shadow: 10px 5px 15px;
 }
-
-#nextMonth {
-    background: url("misc/arrow-green-right.png") no-repeat center;
-}
-
-#prevMonth, #nextMonth {
-    width: 7%;
-    height: 100%;
-    margin: auto;
-    cursor: pointer;
-}
-
 #prevMonth, #nextMonth, #calendar {
     display: inline-block;
     margin: 1px 11px 1px 11px;
 }
 
+/* the box below the main section */
 .lowerSection {
-    width: 80%;
-    height: 130px;
+    width: 88%;
+    height: 220px;
     margin: auto;
-    border-style: solid;
 }
-
-.tasksForm {
-    padding: 15px 20px 50px 20px;
-    margin: 10px;
+.lowerSection h1 {
+    font-size: 24px;
+    font-family: "Javanese Text", sans-serif;
+    text-decoration: underline;
+    display: inline;
+    color: #212480;
+}
+.lowerSection h2 {
     font-size: 20px;
+    font-family: Meiryo, sans-serif;
+    display: inline;
+    letter-spacing: -1px;
+    font-weight: normal;
+}
+.lowerSection h3 {
+    font-size: 21px;
+    display: inline;
+    font-weight: normal;
+}
+.lowerSection h4 {
+    margin: 8px auto 5px auto;
+    font-size: 32px;
+    font-family: "Franklin Gothic Demi Cond", sans-serif;
+    font-style: oblique;
+    text-align: center;
+    text-decoration: underline;
+    color: indigo;
+}
+.lowerSection li {
+    margin: -5px auto 6px auto;
+}
+.todayPlan {
+    width: 50%;
+    height: 100%;
+    margin-right: 20px;
+    display: inline-block;
+}
+.todayPlan ul {
+    margin: -8px auto 9px auto;
+}
+.todayPlan li {
+    margin: -15px auto 16px auto;
+}
+.log {
+    width: 40%;
+    height: 100%;
+    display: inline-block;
+}
+.log, .todayPlan {
+    box-shadow: 1px 1px 25px #412680;
+    border: 2px solid #212480;
+    background-color: #f2f2f2;
+    overflow: auto;
+    border-radius: 35px 2px 2px 35px;
+    margin-left: 10px;
 }
 
-#textArea {
-    resize: none;
-    width: 300px;
-    height: 50px;
-}
-
+/* the footer box */
 footer {
     width: 90%;
     height: 90px;
@@ -199,60 +248,140 @@ footer {
     border-style: solid;
 }
 
-.todayPlan {
-    width: 55%;
-    height: 100%;
-    display: block;
-    float: left;
-    border-style: solid;
-}
-
-.log {
-    width: 40%;
-    height: 100%;
-    display: block;
-    float: right;
-    overflow:auto;
-
-    border-style: solid;
-}
-
-#calendarTable {
-    width: 100%;
-    height: 100%;
-    font-family: Algerian sans-serif;
-}
-
-#scheduleTable {
-    width: 100%;
-    height: 100%;
-    font-family: Algerian sans-serif;
-}
-
-#popUpWindow {
-    width: 380px;
-    height: 220px;
-    display: none; /* Hidden by default */
+/* Pop Up Window design */
+/* ==================== */
+.popUpWindow {
+    width: 425px;
+    height: 340px;
+    border-radius: 50px 2px 2px 2px;
+    display: none;
     position: fixed;
-    margin: 50px 30px 40px 94px;
-    background-color: white;
-    border: solid;
+    margin: 50px 30px 40px 126px;
+    background-color: cornsilk;
+    border: black 6px double;
+    overflow: auto;
+}
+.popUpWindow h1 {
+    margin: 24px auto 2px auto;
+    padding: 10px;
+    letter-spacing: -1px;
+    font-size: 35px;
+}
+.popUpWindow h2 {
+    font: 26px lighter;
+    font-family: "Microsoft New Tai Lue", sans-serif;
+    text-decoration: underline;
+    margin-left: -25px;
+}
+.popUpWindow h3 {
+    font-size: 20px;
+    margin: 2px auto 2px auto;
+    cursor: pointer;
+}
+.popUpWindow h1, .popUpWindow h3 {
+    box-shadow:1px 1px 9px #800000;
+    font-family: "Kristen ITC", sans-serif;
+}
+.popUpWindow ul {
+    padding-left: 1px;
+}
+.popUpWindow ul h1 {
+    font-size: 24px;
 }
 
+/*  */
 #busyDayButton {
     background-color: crimson;
 }
 
+/*  */
 #examButton {
-    background-color: #1C1880;
+    background-color: indigo;
 }
 
+/*  */
 #assignmentButton {
     background-color: darkolivegreen;
 }
 
-#assignmentButton, #busyDayButton, #examButton {
-    cursor: pointer;
-    color: honeydew;
+#addTask {
+
 }
 
+#calendarButton, #busyDayButton, #examButton, #assignmentButton {
+    cursor: pointer;
+}
+
+/* weekly table design */
+#weeklyTable {
+    width: 100%;
+    height: 100%;
+    font-family: Algerian, sans-serif;
+    text-align: center;
+    box-shadow:2px 2px 25px #2E2C80;
+    border-radius: 12px 14px 12px 14px;
+}
+#weeklyTableBody {
+    font-size: 17px;
+}
+
+
+/* design for the forms */
+/* ==================== */
+.tasksForm {
+    padding: 10px;
+    margin: auto;
+    width: 60%;
+    height: 480px;
+    text-align: center;
+    font: 25px arial Impact bold;
+    color: purple;
+    box-shadow: 10px 10px 5px #888888;
+    border: 2px solid #1C1880;
+}
+#textArea {
+    resize: none;
+    width: 300px;
+    height: 50px;
+}
+input[type=number] {
+    width:50px;
+}
+input[type=date], input[type=text], input[type=number], button[type=button], #textArea, select{
+    font-family:  Sansation,Arial, sans-serif;
+    font-size: 17px;
+    border:1px solid #1C1880;
+}
+thead {
+    font-size: 28px;
+}
+fieldset {
+    border: 1px solid #1C1880;
+}
+legend {
+    padding: 0.2em 0.5em;
+    border: 2px solid #1C1880;
+    color: #1C1880;
+    font-size: 24px;
+    text-align: center;
+    font-variant: small-caps;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+#mainSectionList h1 {
+    font-family: "League-Gothic", Courier, sans-serif;
+    font-size: 52px; text-transform: uppercase;
+    color: #222;
+    text-shadow: 1px 2px 3px #666;
+}
+
+#mainSectionList h3 {
+    display: inline;
+}
+
+#mainSectionList button {
+    display: inline;
+    margin-left: 28px;
+}

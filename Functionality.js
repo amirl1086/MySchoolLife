@@ -1,15 +1,32 @@
 /**/
-//beno@balink.net
 
 //globals
-var stuOrg;
+var stuOrg; //the main object which will be stored
 var months = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
-var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 //on page done loading
 $(document).ready(function() {
+    //loading previous saved data
     loadData();
+
+    //loading some text
+    $("header").text("My School Life");
+    $("title").text("My School Life");
+
+    $("body").click(function(e) {
+        if(e.target.id != "calendarButton" && e.target.className != "slideMenu" &&
+            e.target.id != "examButton" && e.target.id != "assignmentButton" && e.target.id != "busyDayButton") {
+            if($(".dropDown").css("display") != "none") {
+                displayWindow("dropDown", "off");
+            }
+            if($(".popUpWindow").css("display") != "none") {
+                displayWindow("popUpWindow", "off");
+            }
+        }
+    });
+
     //adding listeners to the navigation bar buttons
     var navBar = $(".navigationBar")[0].firstElementChild;
     while(navBar) {
@@ -17,36 +34,26 @@ $(document).ready(function() {
         navBar = navBar.nextElementSibling;
     }
 
-    var navButtonLeft = $(".navigationButtonLeft");
-    navButtonLeft.click(switchContent);
-    navButtonLeft.text("Home");
+    //setting up the slide down menu
+    var slideMenuButton = $(".slideMenu");
+    slideMenuButton.text("Beyond");
+    slideMenuButton.click(function() {
+        displayWindow("dropDown", "on");
+    });
 
-    var navButtonRight = $(".navigationButtonRight");
-    navButtonRight.click(switchContent);
-    navButtonRight.text("Add New Assignment");
-
+    //adding listeners to the drop down menu buttons
     var menuBar = $(".dropDown")[0].firstElementChild;
     while(menuBar) {
         menuBar.addEventListener("click", switchContent, false);
         menuBar = menuBar.nextElementSibling;
     }
 
-    //setting up the slide down menu
-    $(".slideMenu").click(function(e) {
-        $(".dropDown").stop(true, true).slideToggle();
-        e.stopPropagation();
-    });
-    $("html").click(function() {
-        $(".dropDown").slideUp();
-        $("#popUpWindow").slideUp();
-    });
-
-    //setting up the text in the header and the buttons
-    $("header")[0].innerText = "My School Life";
+    //setting up the some more text
     var navBarButtons = $(".navigationButton");
+    $(".navigationButtonLeft").text("Home");
+    $(".navigationButtonRight").text("Add New Assignment");
     navBarButtons[0].innerText = "Add New Class";
     navBarButtons[1].innerText = "Add New Exam";
-
     var menuBarButtons = $(".slideMenuButton");
     menuBarButtons[0].innerText = "Weekly Schedule";
     menuBarButtons[1].innerText = "Assignments List";
@@ -54,22 +61,25 @@ $(document).ready(function() {
     menuBarButtons[3].innerText = "Classes List";
     menuBarButtons[4].innerText = "Delete History";
 
-    //initializing the calendar as the first appearance
+    //initializing the first appearance
     loadCalendar();
+    loadTodayPlan();
+    loadLog("");
+    $("footer").html("<h1>All Right reserved</h1>");
 });
 
-//
+//load previous saved data, if any
 function loadData() {
+    //load the item
     stuOrg = JSON.parse(localStorage.getItem('stuOrg'));
-    if (stuOrg === null) {
-        stuOrg = {
+    if (stuOrg === null) { //if null, then no history to load
+        stuOrg = { //create the object apperence
             currentDate:  (new Date()).getTime(),
             classes: [],
             exams: [],
             assignments: [],
             log: []
         };
-        //tester();
     }
     else {
         //JSON parse() will parse back the string to a javascript object
@@ -79,10 +89,12 @@ function loadData() {
     }
 }
 
+//retrieve all objects to their original prototypes
 function copyConstructor() {
-    var  i;
+    //reset the log
     stuOrg.log = [];
-    for(i = 0 ;i < stuOrg.assignments.length; i++) {
+    //go trough the main object and clone the data
+    for(var i = 0 ;i < stuOrg.assignments.length; i++) {
         stuOrg.assignments[i] = cloneAssignment(stuOrg.assignments[i]);
     }
     for(i = 0 ;i < stuOrg.exams.length; i++) {
@@ -93,33 +105,51 @@ function copyConstructor() {
     }
 }
 
-//this function will be responsible for switching the html code of the main section
+//switching the html code of the main section
 function switchContent(e) {
     //get the name of the button that was clicked
     var buttonClicked = e.target.innerText;
     var mainSection =  $(".mainSection");
-    mainSection.html("");
+    mainSection.html(""); //reset the main section html
+    var displayedList = "";
+    //activate a function according to the button clicked
     switch (buttonClicked) {
         case "Weekly Schedule":
             loadWeeklySchedule();
             break;
         case "Assignments List":
-            loadList(stuOrg.assignments, "Assignments", mainSection);
+        //function loadList(list, title, id, style, format) {
+            if(!(displayedList = loadList(stuOrg.assignments, "Assignments", "",  "full")).length)
+                loadLog("No Assignments to display");
+            else {
+                mainSection.html(displayedList);
+                applyEditingTasks();
+            }
             break;
         case "Exams List":
-            loadList(stuOrg.exams, "Exams", mainSection);
+            if(!(displayedList = loadList(stuOrg.exams, "Exams", "",  "full")).length)
+                loadLog("No Exams to display");
+            else {
+                mainSection.html(displayedList);
+                applyEditingTasks();
+            }
             break;
         case "Classes List":
-            loadList(stuOrg.classes, "Classes", mainSection);
+            if(!(displayedList = loadList(stuOrg.classes, "Classes", "",  "full")).length)
+                loadLog("No classes to display");
+            else {
+                mainSection.html(displayedList);
+                applyEditingTasks();
+            }
             break;
         case "Home":
             loadCalendar();
             break;
         case "Add New Assignment":
-            loadAddAssignment();
+            loadAddAssignment(null);
             break;
         case "Add New Exam":
-            loadAddExam();
+            loadAddExam(null);
             break;
         case "Add New Class":
             loadAddClass();
@@ -130,41 +160,48 @@ function switchContent(e) {
     }
 }
 
-//this function will load the calendar structure
+//load the home page (the calendar)
 function loadCalendar() {
     var i, j = 0, tableRows, tableCell,
         tempDate = new Date(stuOrg.currentDate),
         currentMonth = tempDate.getMonth(), newRow;
     tempDate.setDate(1);
 
+    //load initial html
     $(".mainSection").html("<div id='prevMonth'></div><div id='calendar'>" +
-        "<div id='popUpWindow'></div><table id='calendarTable' border='4' width='100%' cellspacing='5'>" +
+        "<div class='popUpWindow'></div><table id='calendarTable' border='4' width='100%' cellspacing='5'>" +
         "<thead><tr><td colspan='7'>" + months[tempDate.getMonth()] + ", " + tempDate.getFullYear() +
-        "</td></tr></thead><tbody id='tableBody'></tbody></table></div></div><div id='nextMonth'></div>");
+        "</td></tr></thead><tbody id='calendarTableBody'></tbody></table></div></div><div id='nextMonth'></div>");
 
-    tableRows = $("#tableBody"); //get the table body id
-    for (i = 0; i < days.length - 1; i++) {
-        newRow = createTableRow(days.length);
-        tableRows.append(newRow);
-    }
+    //create the table as an element
+    tableRows = createTable(days.length - 1, days.length, "calendarTableBody");
 
+    //insert the week days names
     tableCell = tableRows[0].firstElementChild.firstElementChild;
     for (i = 0; i < days.length; i++) {
         tableCell.innerText = days[i];
         tableCell = tableCell.nextElementSibling;
     }
 
+    //insert days by numbers and colors according to the task
     i = tempDate.getDay();
     tableRows = tableRows[0].childNodes[1];
+    //go through the rows
     while(tableRows) {
         tableCell = tableRows.firstElementChild;
+        //go through the columns
         while(tableCell) {
+            //if j is in range of the days of the current month
             if(j++ >= i && currentMonth === tempDate.getMonth()) {
-                tableCell.innerHTML = tempDate.getDate();
+                tableCell.innerText = tempDate.getDate(); //insert the number of the day
+
+                //get the tasks on the current day as a [ [], [] ] array
                 var dailyTasks = [getTasksByDate(stuOrg.exams, tempDate), getTasksByDate(stuOrg.assignments, tempDate)];
                 tempDate.setDate(tempDate.getDate() + 1);
+
+                //if there are any tasks color the table cell accordingly by insert a new id to the cell
                 if(dailyTasks[0].length || dailyTasks[1].length) {
-                    tableCell.addEventListener("click", getDailyDetails, false);
+
                     if (dailyTasks[0].length && dailyTasks[1].length) {
                         tableCell.id = "busyDayButton";
                     }
@@ -175,14 +212,19 @@ function loadCalendar() {
                         tableCell.id = "assignmentButton";
                     }
                 }
+                else {
+                    tableCell.id = "calendarButton";
+                }
+                tableCell.addEventListener("click", calendarClicked, false);
             }
-            else {
-                tableCell.innerHTML = "";
+            else { //if the day is not in range, erase previous data
+                tableCell.innerText = "";
             }
             tableCell = tableCell.nextElementSibling;
         }
         tableRows = tableRows.nextElementSibling;
 
+        //a check to allow a dynamic number of rows according to the length of the current month
         if(!tableRows && tempDate.getMonth() === currentMonth) {
             tableRows = $("#calendarTable")[0].childNodes[1];
             newRow = createTableRow(days.length);
@@ -190,11 +232,12 @@ function loadCalendar() {
             tableRows = tableRows.lastElementChild;
         }
     }
+    //adding listeners to the buttons
     $("#prevMonth").click(changeMonth);
     $("#nextMonth").click(changeMonth);
 }
 
-//this function will change the current month according to the direction clicked (forward or backward)
+//change the current month according to the arrow clicked (forward or backward)
 function changeMonth() {
     var tempDate = new Date(stuOrg.currentDate);
     if (this.id == "prevMonth")
@@ -206,186 +249,264 @@ function changeMonth() {
     localStorage.setItem('stuOrg', JSON.stringify(stuOrg));
 }
 
-function getDailyDetails(e) {
-    var popUpWindow = $("#popUpWindow");
-    popUpWindow.stop(true, true).slideToggle();
-    e.stopPropagation();
 
-    var currentCalendar = new Date(stuOrg.currentDate);
-    var tempDate = new Date(currentCalendar.getFullYear(), currentCalendar.getMonth(), e.srcElement.innerText);
 
-    var dailyTasks = [getTasksByDate(stuOrg.exams, tempDate), getTasksByDate(stuOrg.assignments, tempDate)];
-    popUpWindow.html("");
-    loadList(dailyTasks[0], "Exams", popUpWindow);
-    loadList(dailyTasks[1], "Assignments", popUpWindow);
-}
-
-//
+//load the weekly schedule
 function loadWeeklySchedule() {
-    var i, j = 0 , k = 0, m;
-    //finding the minimum and maximum school hours
+    var i, j, k = 0, m;
     if (!stuOrg.classes.length) {
-        refreshPage("No classes to show");
+        loadLog("No classes to display");
         return;
     }
-
-    var weeklyTable = "<table id='scheduleTable' border='4' width='100%' cellspacing='1'>" +
+    $(".mainSection").html("<table id='weeklyTable' border='4' width='100%' cellspacing='5'>" +
         "<thead><tr><td colspan='8'>Weekly Schedule</td></tr></thead>" +
-        "<tbody id><tr id='columnNumber'><th>Time\\Day</th><th>Sunday</th>" +
-        "<th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th>" +
-        "</tr><tr id='rowNumber'><td>8:00</td><td></td><td></td><td></td><td></td><td></td></tr>";
+        "<tbody id='weeklyTableBody'></tbody></table>");
 
-    //14 school hours every day, 6 days a week + 1 for the time - 14 X 7 table
-    for(i = 1; i < 14; i++) {
-        weeklyTable += "<tr>";
-        for(j = 0; j < 7; j++) {
-            if (j == 0)
-                weeklyTable += "<td>" + (i + j + 8) + ":00</td>";
-            else
-                weeklyTable += "<td></td>";
-        }
-        weeklyTable += "</tr>";
+    //14 school hours every day + 2 for the header and the days , 6 days a week + 1 for the time - 16 X 7 table
+    var tableBody = createTable(15, 7, "weeklyTableBody");
+
+    //insert the week days names
+    var tableCell = tableBody[0].firstElementChild.firstElementChild;
+    tableCell.innerText = "Time\\Day";
+    tableCell = tableCell.nextElementSibling;
+    for (i = 1; tableCell; i++) {
+        tableCell.innerText = days[i - 1];
+        tableCell = tableCell.nextElementSibling;
     }
-    //closing the table
-    weeklyTable +=
-        "</tbody>" +
-        "</table>";
-    $(".mainSection")[0].innerHTML = weeklyTable;
 
-    //
+
+    tableBody = tableBody[0].childNodes[1];
+    for(i = 8; tableBody; tableBody = tableBody.nextElementSibling, i++) {
+        tableBody.firstElementChild.innerText = i + ":00";
+    }
+    tableBody = $("#weeklyTableBody");
+
     for(i = 0; i < stuOrg.classes.length; i++) {
-        // row - number, column - string
-
-        var column = $("#columnNumber")[0].firstElementChild;
+        var startTime = stuOrg.classes[i].startTime;
+        var endTime = stuOrg.classes[i].endTime;
 
         //find the column index by name
-        for (j = 0; column.innerText != stuOrg.classes[i].dDay; j++) {
+        var column = tableBody[0].firstElementChild.firstElementChild;
+        for (j = 0; column.innerText != days[stuOrg.classes[i].dDay]; j++) {
             column = column.nextElementSibling;
         }
 
-        //find the row and the column meeting point index by some calculations
-        var row = stuOrg.classes[i].startTime.hours - 8;
-        var tempTableRow = $("#rowNumber")[0];
-        while (k < row) {
-            tempTableRow = tempTableRow.nextElementSibling;
-            k++;
+        //find the row by the start time of the class
+        var row = tableBody[0].childNodes[1];
+        for (k = 8; row.firstElementChild.innerText.charAt(0) != startTime.hours.toString().charAt(0); k++) {
+            row = row.nextElementSibling;
         }
 
-        //stepping on the cells to find the correct place
-        var tempTableCell = tempTableRow.firstElementChild;
+        //stepping on the cells to find the correct column
+        var tempTableCell = row.firstElementChild;
         for(k = 0; k < j; k++)
             tempTableCell = tempTableCell.nextElementSibling;
 
-        tempTableCell.innerHTML = stuOrg.classes[i].className + "<br>" +stuOrg.classes[i].startTime + " - " + stuOrg.classes[i].endTime;
+        //put the value
+        tempTableCell.innerHTML = stuOrg.classes[i].name + "<br>" +stuOrg.classes[i].startTime + " - " + stuOrg.classes[i].endTime;
 
-        for(m = stuOrg.classes[i].startTime.hours; m < stuOrg.classes[i].endTime.hours - 1; m++) {
-            tempTableRow = tempTableRow.nextElementSibling;
-            tempTableCell = tempTableRow.firstElementChild;
+        //go to below cells if necessary
+        for(m = startTime.hours; m < endTime.hours - 1; m++) {
+            row = row.nextElementSibling;
+            tempTableCell = row.firstElementChild;
             for(k = 0; k < j; k++)
                 tempTableCell = tempTableCell.nextElementSibling;
-            tempTableCell.innerText = stuOrg.classes[i].className;
+            tempTableCell.innerText = stuOrg.classes[i].name;
         }
 
-        if(stuOrg.classes[i].endTime.minutes > 0) {
-            tempTableRow = tempTableRow.nextElementSibling;
-            tempTableCell = tempTableRow.firstElementChild;
+        if(endTime.minutes > 0) {
+            row = row.nextElementSibling;
+            tempTableCell = row.firstElementChild;
             for (k = 0; k < j; k++)
-                tempTableRow = tempTableRow.nextElementSibling;
-            tempTableRow.innerText = stuOrg.classes[i].className;
+                tempTableCell = tempTableCell.nextElementSibling;
+            tempTableCell.innerText = stuOrg.classes[i].name;
         }
     }
 }
 
 //
-function loadList(list, title, location) {
+function loadList(list, title, additionalHeader, format) {
     if(!list.length) {
-        return null;
+        return "";
     }
-    var ulList = location.append("<ul>" + title + ":</ul>");
+    var ulList = "<ul><h1>" + title + "</h1> <h2>" + additionalHeader + "</h2>";
     for(var i = 0; i < list.length; i++) {
-        ulList.append("<li>" + list[i].toString() + "</li>");
+        if(format == "full")
+            ulList += "<li><h3>" + list[i].toString() + "</h3></li>";
+        else if (format == "partial")
+            ulList += "<li><h3>" + list[i].dailyToString() + "</h3></li>";
     }
+    ulList += "</ul>";
+    return ulList;
+}
+
+//pop up a window that will show the daily tasks
+function calendarClicked(e) {
+    var popUp = $(".popUpWindow");
+    if(popUp.css('display') != 'block')
+        displayWindow("popUpWindow", "on");
+    var dayClicked = getDayClicked(e);
+    var dailyTasksText = "<h1>" + dayClicked.getDate() + " - " + months[dayClicked.getMonth()] +
+        " - " + dayClicked.getFullYear() + "</h1>";
+
+    //get the tasks on the current day as a [ [], [] ] array
+    var dailyTasks = [getTasksByDate(stuOrg.exams, dayClicked), getTasksByDate(stuOrg.assignments, dayClicked)];
+
+    //load the list according to the choice
+    dailyTasksText += loadList(dailyTasks[0], "Exams", "", "partial");
+    dailyTasksText += loadList(dailyTasks[1], "Assignments", "", "partial");
+    dailyTasksText += "<ul><h2>Would you like to add a Task?</h2>" +
+        "<li id='editExamFromPop'><h3>Exam on that day?</h3></li>" +
+        "<br><li id='editAssignmentFromPop'><h3>Assignment to hand in?</h3></li></ul>";
+    popUp.html(dailyTasksText);
+    $("#editExamFromPop").click(function () { loadAddExam(dayClicked)});
+    $("#editAssignmentFromPop").click(function () { loadAddAssignment(dayClicked)});
+}
+
+function getDayClicked(e) {
+    var dayClicked = new Date(stuOrg.currentDate);
+    dayClicked.setDate(e.currentTarget.innerText);
+    return dayClicked;
+}
+
+function displayWindow(section, status) {
+    var popUpWindow = $("." + section);
+    if(status == "on")
+        popUpWindow.stop(true, true).slideToggle();
+    else
+        popUpWindow.slideUp("slow");
+}
+
+
+//load the daily planner
+function loadTodayPlan() {
+    var tempText = "<h4>Daily Planner</h4>";
+    var dailyPlanner = $(".todayPlan");
+
+    //print the classes on the current day
+    var todayClasses = getClassesByDay(stuOrg.classes, new Date().getDay());
+    if(todayClasses.length) {
+        tempText += loadList(todayClasses, "Classes", "today:", "partial");
+    }
+
+    //print the exams in the near month
+    var monthlyExams = getTasksByTime(stuOrg.exams, 30);
+    if(monthlyExams.length) {
+        tempText += loadList(monthlyExams, "Exams", "in the near month:", "partial");
+    }
+
+    //print the assignments to hand-in in the next week
+    var monthlyAssignments = getTasksByTime(stuOrg.assignments, 7);
+    if(monthlyAssignments.length) {
+        tempText += loadList(monthlyAssignments, "Assignments", "due by the next week:", "partial");
+    }
+    dailyPlanner.html(tempText);
+}
+
+function applyEditingTasks() {
+    var mainSection = $(".mainSection");
+    mainSection.find("ul").attr("id", "mainSectionList");
+    var index = 0;
+    mainSection.find("li").each(function () {
+        $(this).append($("<button />").click(function(e){
+            editTask(e);
+        }).text("EDIT").attr("id", index));
+        $(this).append($("<button />").click(function(e){
+            removeTask(e);
+        }).text("REMOVE").attr("id", index));
+        index++;
+    });
+}
+
+function editTask(e) {
+    var index = parseInt(e.target.id);
+    var listPresented = $("#mainSectionList")[0].firstElementChild.innerHTML;
+    if(listPresented == "Exams") {
+        loadEditExam(stuOrg.exams[index], index);
+    }
+    else if(listPresented == "Assignments") {
+        loadEditAssignment(stuOrg.assignments[index], index);
+    }
+    else {
+        loadEditClass(stuOrg.classes[index], index);
+    }
+}
+
+function removeTask(e) {
+    var res = confirm("Are you sure?\nThis task will be deleted");
+    if (res) {
+        var index = parseInt(e.target.id);
+        var listPresented = $("#mainSectionList")[0].firstElementChild.innerHTML;
+        if(listPresented == "Exams") {
+            stuOrg.exams.splice(index, 1);
+            loadLog("Exam deleted successfully");
+        }
+        else if(listPresented == "Assignments") {
+            stuOrg.assignments.splice(index, 1);
+            loadLog("Assignment deleted successfully");
+        }
+        else {
+            stuOrg.classes.splice(index, 1);
+            loadLog("Class deleted successfully");
+        }
+    }
+    loadCalendar();
+    loadTodayPlan();
 }
 
 //
-function loadLog() {
-    var tempLog = "Log<ul>";
-    for(var i = 0; i < stuOrg.log.length; i++) {
-        if (i == 0)
-            tempLog += "<li><b>" + stuOrg.log[i] + "</b></li>";
-        else
-            tempLog += "<li>" + stuOrg.log[i] + "</li>";
-    }
-    tempLog += "</ul>";
-    $(".log")[0].innerHTML = tempLog;
-}
-
-function refreshPage(logMsg) {
-    var tempDate = new Date();
-    var log = new Log(logMsg, new Time(tempDate.getHours(), tempDate.getMinutes()));
-    stuOrg.log.unshift(log);
-    loadLog();
-    loadCalendar();
-}
-
 function deleteStorage() {
     var res = confirm("Are you sure?\nAll your data will be deleted!");
     if (res) {
         localStorage.removeItem("stuOrg");
         loadData();
-        loadCalendar();
     }
+    loadCalendar();
+    loadTodayPlan();
+    loadLog("");
 }
 
-function addItem(type, item) {
+//
+function addTask(type, item) {
+    if(!item)
+        return;
     switch (type) {
         case "class":
             stuOrg.classes.unshift(item);
-            sortByDay(stuOrg.classes);
+            sortTasksByDate(stuOrg.classes);
             break;
         case "exam":
             stuOrg.exams.unshift(item);
-            sortByDay(stuOrg.exams);
+            sortTasksByDate(stuOrg.exams);
             break;
         case "assignment":
             stuOrg.assignments.unshift(item);
-            sortByDay(stuOrg.assignments);
+            sortTasksByDate(stuOrg.assignments);
+            break;
+        case "log":
+            stuOrg.log.unshift(item);
             break;
     }
-    localStorage.setItem('stuOrg', JSON.stringify(stuOrg));
-}
-
-function sortByDay(list) {
-    if(list.length <= 1)
-        return;
-    for (var i = 0; i < list.length; i++) {
-        if(list[i].dDay > list[i + 1]) {
-            var temp = list[i + 1];
-            list[i] = list[i + 1];
-            list[i + 1] = temp;
-        }
+    if(type != "log") {
+        loadTodayPlan();
+        localStorage.setItem('stuOrg', JSON.stringify(stuOrg));
     }
 }
 
-function createTableRow(length)
-{
-    var newRow = document.createElement("TR");
-    for(var i = 0; i < length; i++)
-        newRow.insertCell(i);
-    return newRow;
-}
-
-function getTasksByDate(list, otherDate)
+//
+function getTasksByDate(list, thisDate)
 {
     if(!list.length) {
         return [];
     }
-    var dailyTasks = [],
-        thisDate;
+    var dailyTasks = [], otherDate;
     for(var i = 0; i < list.length; i++) {
-        thisDate = new Date(list[i].dDay);
-        if(otherDate.getMonth() == thisDate.getMonth() && otherDate.getDate() == thisDate.getDate())
+        otherDate = new Date(list[i].dDay);
+        if(thisDate.getMonth() == otherDate.getMonth() &&
+            thisDate.getDate() == otherDate.getDate() &&
+            thisDate.getFullYear() == otherDate.getFullYear()) {
             dailyTasks.unshift(list[i]);
+        }
     }
     if(dailyTasks.length) {
         return dailyTasks;
@@ -393,60 +514,120 @@ function getTasksByDate(list, otherDate)
     return [];
 }
 
-function getDayByName(name)
-{
-    for(var i = 0; i < days.length; i++)
-        if(name === days[i])
-            return i;
+//
+function getClassesByDay(list, day) {
+    var classesToday = [];
+    for(var i = 0; i < list.length; i++) {
+        if(list[i].dDay === day)
+            classesToday.unshift(list[i]);
+    }
+    return classesToday;
 }
 
+function getDayNumberByName(givenDay) {
+    for(var i = 0; i < days.length; i++) {
+        if(days[i] === givenDay)
+            return i;
+    }
+    return null;
+}
+
+//
+function getTasksByTime(list, range) {
+    var today = (new Date()).getTime();
+    var todayPlusRange = new Date();
+    todayPlusRange.setDate(todayPlusRange.getDate() + range);
+    todayPlusRange = todayPlusRange.getTime();
+    var monthlyTasks = [];
+
+    for(var i = 0; i < list.length; i++) {
+        if (list[i].dDay > today && list[i].dDay < todayPlusRange)
+            monthlyTasks.push(list[i]);
+    }
+    return monthlyTasks;
+}
+
+//
+function sortTasksByDate(list) {
+    if(list.length <= 1)
+        return;
+    for (var i = 0; i < list.length - 1; i++) {
+        if(list[i].dDay > list[i + 1].dDay) {
+            var temp = list[i + 1];
+            list[i + 1] = list[i];
+            list[i] = temp;
+        }
+    }
+}
+
+//create a table as an element
+function createTable(numOfRows, numOfColumns, section) {
+
+    var tableRows = $("#" + section); //get the table body id
+    for(var i = 0; i < numOfRows; i++)
+        tableRows.append(createTableRow(numOfColumns));
+    return tableRows;
+}
+
+//create a table row as an element
+function createTableRow(length) {
+    var newRow = document.createElement("TR");
+    for(var i = 0; i < length; i++)
+        newRow.insertCell(i);
+    return newRow;
+}
+
+//
 function tester() {
-    var c1 = new Class("Polynomials", "Sunday", new Time(8, 0), new Time(11, 0), "des: Hassin");
-    var c2 = new Class("Operation Systems", "Sunday", new Time(10, 0), new Time(13, 0), "des: miri");
-    var c3 = new Class("Computers communication", "Monday", new Time(15, 0), new Time(18, 0), "des: axman");
-    var c4 = new Class("Linear Algebra", "Wednesday", new Time(8, 30), new Time(10, 30), "des: Oshrit otisrotzki");
-    var c5 = new Class("Discrete Math", "Tuesday", new Time(10, 0), new Time(14, 0), "des: Yoav rodeh");
-    var c6 = new Class("ODD", "Tuesday", new Time(10, 0), new Time(14, 0), "des: Yoav rodeh");
-    var c7 = new Class("Discrete Math", "Tuesday", new Time(10, 0), new Time(14, 0), "des: Yoav rodeh");
-    var c8 = new Class("Discrete Math", "Tuesday", new Time(10, 0), new Time(14, 0), "des: Yoav rodeh");
-    var c9 = new Class("Discrete Math", "Tuesday", new Time(10, 0), new Time(14, 0), "des: Yoav rodeh");
-    var c10 = new Class("Discrete Math", "Tuesday", new Time(10, 0), new Time(14, 0), "des: Yoav rodeh");
-    var c11 = new Class("Discrete Math", "Tuesday", new Time(10, 0), new Time(14, 0), "des: Yoav rodeh");
+    var c1 = new Class("Polynomials", 0, new Time(8, 0), new Time(10, 0), "des: Hassin");
 
-    addItem("class", c1);
-    addItem("class", c2);
-    addItem("class", c3);
-    addItem("class", c4);
-    addItem("class", c5);
-    addItem("class", c6);
-    addItem("class", c7);
-    addItem("class", c8);
-    addItem("class", c9);
-    addItem("class", c10);
-    addItem("class", c11);
 
-    var a1 = new Assignment("poly - ex2", new Date(0, 0, 2016), new Time(17, 0), "Very important test");
-    var a2 = new Assignment("OS - ex12", new Date(1, 1, 2016), new Time(10, 0), "Kinda important test");
-    var a3 = new Assignment("C. Communication - ex1", new Date(2, 2, 2016), new Time(13, 0), "Just important test");
-    var a4 = new Assignment("Lin Algebra - ex6", new Date(3, 4, 2016), new Time(9, 30), "Medium important test");
-    var a5 = new Assignment("Dis math - ex4", new Date(7, 5, 2016), new Time(11, 0), "important test");
+    var c2 = new Class("Operation Systems", 0, new Time(11, 0), new Time(15, 0), "des: Miri");
 
-    addItem("assignment", a1);
-    addItem("assignment", a2);
-    addItem("assignment", a3);
-    addItem("assignment", a4);
-    addItem("assignment", a5);
+    var c3 = new Class("Computers communication", 1, new Time(15, 0), new Time(18, 0), "des: Axman");
+    var c4 = new Class("Linear Algebra", 0, new Time(16, 30), new Time(20, 30), "des: Oshrit");
+    var c5 = new Class("Discrete Math", 2, new Time(10, 0), new Time(14, 0), "des: Yoav");
+    var c6 = new Class("ODD", 2, new Time(10, 0), new Time(14, 0), "des: Axman");
+    var c7 = new Class("C/CPP", 2, new Time(8, 0), new Time(9, 5), "des: Assaf");
+    var c8 = new Class("Software Engineering", 3, new Time(9, 30), new Time(11, 30), "des: Rubi");
+    var c9 = new Class("Distributed systems", 3, new Time(11, 45), new Time(15, 5), "des: Axman");
+    var c10 = new Class("Calculus", 4, new Time(8, 0), new Time(14, 40), "des: Hagit");
+    var c11 = new Class("Math to engineers", 5, new Time(10, 0), new Time(14, 0), "des: Hagit");
 
-    var e1 = new Exam("Poly - exam", new Date(5, 5, 2016), new Time(13, 30), 90, "pretty good");
-    var e2 = new Exam("OS - exam", new Date(1, 5, 2016), new Time(8, 0), 60, "not very good");
-    var e3 = new Exam("CC - exam", new Date(2, 10, 2016), new Time(16, 0), 0, "very bad");
-    var e4 = new Exam("LA - exam", new Date(9, 6, 2016), new Time(20, 0), 40, "medium minus");
-    var e5 = new Exam("DM - exam", new Date(11, 11, 2016), new Time(11, 30), 80, "good");
+    addTask("class", c1);
+    addTask("class", c2);
+    addTask("class", c3);
+    addTask("class", c11);
+    addTask("class", c5);
+    addTask("class", c6);
+    addTask("class", c7);
+    addTask("class", c8);
+    addTask("class", c9);
+    addTask("class", c10);
+    addTask("class", c4);
 
-    addItem("exam", e1);
-    addItem("exam", e2);
-    addItem("exam", e3);
-    addItem("exam", e4);
-    addItem("exam", e5);
+    var a1 = new Assignment("poly - ex2", new Date(2016, 0, 0), new Time(17, 0), "Very important test");
+    var a2 = new Assignment("OS - ex12", new Date(2016, 1, 1), new Time(10, 0), "Kinda important test");
+    var a3 = new Assignment("C. Communication - ex1", new Date(2016, 2, 2), new Time(13, 0), "Just important test");
+    var a4 = new Assignment("Lin Algebra - ex6", new Date(2015, 4, 3), new Time(9, 30), "Medium important test");
+    var a5 = new Assignment("Dis math - ex4", new Date(2014, 5, 16), new Time(11, 0), "important test");
+
+    addTask("assignment", a1);
+    addTask("assignment", a2);
+    addTask("assignment", a3);
+    addTask("assignment", a4);
+    addTask("assignment", a5);
+
+    var e1 = new Exam("Poly - exam", new Date(2013, 5, 2), new Time(13, 30), 90, "pretty good");
+    var e2 = new Exam("OS - exam", new Date(2014, 5, 6), new Time(8, 0), 60, "not very good");
+    var e3 = new Exam("CC - exam", new Date(2015, 10, 16), new Time(16, 0), 0, "very bad");
+    var e4 = new Exam("LA - exam", new Date(2017, 6, 20), new Time(20, 0), 40, "medium minus");
+    var e5 = new Exam("DM - exam", new Date(2018, 11, 2), new Time(11, 30), 80, "good");
+
+    addTask("exam", e1);
+    addTask("exam", e2);
+    addTask("exam", e3);
+    addTask("exam", e4);
+    addTask("exam", e5);
 }
 
