@@ -65,7 +65,7 @@ $(document).ready(function() {
     loadCalendar();
     loadTodayPlan();
     loadLog("");
-    $("footer").html("<h1>All Right reserved</h1>");
+    $("footer").html("<h3>&copy 2016 All rights reserved to Amir Lavi & Oron Sason</h3>");
 });
 
 //load previous saved data, if any
@@ -170,7 +170,7 @@ function loadCalendar() {
     //load initial html
     $(".mainSection").html("<div id='prevMonth'></div><div id='calendar'>" +
         "<div class='popUpWindow'></div><table id='calendarTable' border='4' width='100%' cellspacing='5'>" +
-        "<thead><tr><td colspan='7'>" + months[tempDate.getMonth()] + ", " + tempDate.getFullYear() +
+        "<thead><tr><td colspan='7' id='month'>" + months[tempDate.getMonth()] + ", " + tempDate.getFullYear() +
         "</td></tr></thead><tbody id='calendarTableBody'></tbody></table></div></div><div id='nextMonth'></div>");
 
     //create the table as an element
@@ -180,6 +180,7 @@ function loadCalendar() {
     tableCell = tableRows[0].firstElementChild.firstElementChild;
     for (i = 0; i < days.length; i++) {
         tableCell.innerText = days[i];
+        tableCell.id="days";
         tableCell = tableCell.nextElementSibling;
     }
 
@@ -219,6 +220,7 @@ function loadCalendar() {
             }
             else { //if the day is not in range, erase previous data
                 tableCell.innerText = "";
+                tableCell.id="emptyButton";
             }
             tableCell = tableCell.nextElementSibling;
         }
@@ -450,6 +452,7 @@ function removeTask(e) {
             loadLog("Class deleted successfully");
         }
     }
+    localStorage.setItem('stuOrg', JSON.stringify(stuOrg));
     loadCalendar();
     loadTodayPlan();
 }

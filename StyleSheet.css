@@ -5,7 +5,7 @@
 body {
     margin: auto;
     padding: 25px;
-    background-color: antiquewhite;
+    background-color: lightcyan;
 }
 
 /* the website box */
@@ -14,10 +14,10 @@ body {
     height: auto;
     margin: auto;
     padding: 15px;
-    box-shadow: 1px 1px 25px darkslateblue;
+    box-shadow: 1px 1px 25px rgba(0, 137, 255,1);
     border-radius: 50px 1px 50px 1px;
     background-color: white;
-    border: 10px double #14396A;
+    border: 10px double rgba(0, 137, 255,1);
 }
 
 /* the header box */
@@ -27,13 +27,12 @@ header {
     margin: 8px auto 15px auto;
     box-shadow: 1px 1px 25px #7075FF;
     border-radius: 50px 1px 50px 1px;
-    background-color: aquamarine;
-    border: 10px double darkslateblue;
+    background-color: lightcyan;
     text-align: center;
-    font-family: "Tahoma", "Geneva", sans-serif;
+    font-family: 'Goudy Old Style', Garamond, 'Big Caslon', 'Times New Roman', serif;
     font-size: 76px;
     font-weight: bold;
-    color: indigo;
+    color: rgba(0, 137, 255,1);
     font-style: oblique;
     font-variant: small-caps;
     letter-spacing: 4px;
@@ -46,27 +45,30 @@ header {
     display: inline;
     float: left;
     margin-top: 10px;
-    border-radius: 50px 1px 50px 1px;
+    border-radius: 50px 50px 50px 50px;
     border: solid;
     background-color: rgba(0, 137, 255, 1);
     color: rgba(0, 137, 255, 1);
-    box-shadow:-3px -3px 10px #312C80;
+    box-shadow: 5px 1px 10px #000000;
+
 }
 .navigationButton {
     padding: 10px 5px 10px 5px;
     width: 100px;
+    border-radius: 50px 50px 50px 50px;
 }
 .navigationButtonLeft {
     width: 120px;
     margin: 3px 7px 3px 18px;
     padding: 10px 5px 10px 15px;
-    border-radius: 50px 1px 1px 1px;
+    border-radius: 50px 50px 50px 50px;
+
 }
 .navigationButtonRight {
     width: 140px;
     margin: 3px 7px 3px 7px;
     padding: 10px 15px 10px 5px;
-    border-radius: 1px 1px 50px 1px;
+    border-radius: 50px 50px 50px 50px;
 }
 .navigationButton, .navigationButtonLeft, .navigationButtonRight {
     height: 34px;
@@ -92,7 +94,7 @@ header {
 /* drop down menu */
 .slideMenu {
     width: 15%;
-    margin: 15px 60px 10px 10px;
+    margin: 25px 70px 10px 10px;
     display: inline;
     float: right;
 }
@@ -127,7 +129,7 @@ header {
     display: none;
     position: absolute;
     z-index: 2;
-    margin: 64px auto auto 718px;
+    margin: 75px auto auto 695px;
     float: right;
 }
 
@@ -142,15 +144,18 @@ header {
 
 /* the months changing arrows and the calendar box */
 #prevMonth {
-    background: url("misc/arrow-green-left.png") no-repeat center;
+    background: url("misc/arrow-green-left .png") no-repeat center;
 }
 #nextMonth {
-    background: url("misc/arrow-green-right.png") no-repeat center;
+    background: url("misc/arrow-green-right .png") no-repeat center;
 }
 #prevMonth, #nextMonth {
     width: 7%;
     height: 500px;
     cursor: pointer;
+}
+#days, #month, #emptyButton {
+    border-style: none;
 }
 #calendar {
     width: 75%;
@@ -158,11 +163,12 @@ header {
     text-align: center;
     position: relative;
     font-size: 20px;
-    box-shadow:1px 1px 25px 8px #1C1880;
+    box-shadow:1px 1px 25px 8px rgba(0, 137, 255, 1);
     color: #333;
     border-collapse: collapse; border-spacing: 0;
 }
 #calendarTable {
+
     width: 100%;
     height: 520px;
     font-family: Impact, sans serif;
@@ -170,7 +176,9 @@ header {
     font-variant: normal;
     text-align: center;
     font-weight: 500;
-    text-shadow: 10px 5px 15px;
+    text-shadow: 2px 2px 15px;
+    border-style: none;
+
 }
 #prevMonth, #nextMonth, #calendar {
     display: inline-block;
@@ -188,7 +196,7 @@ header {
     font-family: "Javanese Text", sans-serif;
     text-decoration: underline;
     display: inline;
-    color: #212480;
+    color:rgba(0, 137, 255,1);
 }
 .lowerSection h2 {
     font-size: 20px;
@@ -209,7 +217,7 @@ header {
     font-style: oblique;
     text-align: center;
     text-decoration: underline;
-    color: indigo;
+    color: rgba(0, 137, 255,1);
 }
 .lowerSection li {
     margin: -5px auto 6px auto;
@@ -232,11 +240,12 @@ header {
     display: inline-block;
 }
 .log, .todayPlan {
-    box-shadow: 1px 1px 25px #412680;
-    border: 2px solid #212480;
-    background-color: #f2f2f2;
+    box-shadow: rgba(0, 137, 255,1);
+    border: rgba(0, 137, 255,1);
+    border-style: double;
+    background-color: lightgrey;
     overflow: auto;
-    border-radius: 35px 2px 2px 35px;
+    border-radius: 35px 35px 35px 35px;
     margin-left: 10px;
 }
 
@@ -245,41 +254,41 @@ footer {
     width: 90%;
     height: 90px;
     margin: 20px auto 20px auto;
-    border-style: solid;
+    font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
 }
 
 /* Pop Up Window design */
 /* ==================== */
 .popUpWindow {
     width: 425px;
-    height: 340px;
+    height: 265px;
     border-radius: 50px 2px 2px 2px;
     display: none;
     position: fixed;
     margin: 50px 30px 40px 126px;
     background-color: cornsilk;
-    border: black 6px double;
+    border:  limegreen 6px double;
     overflow: auto;
 }
 .popUpWindow h1 {
     margin: 24px auto 2px auto;
     padding: 10px;
     letter-spacing: -1px;
-    font-size: 35px;
+    font-size: 30px;
 }
 .popUpWindow h2 {
     font: 26px lighter;
     font-family: "Microsoft New Tai Lue", sans-serif;
-    text-decoration: underline;
     margin-left: -25px;
 }
 .popUpWindow h3 {
     font-size: 20px;
     margin: 2px auto 2px auto;
+    text-decoration: underline;
     cursor: pointer;
 }
 .popUpWindow h1, .popUpWindow h3 {
-    box-shadow:1px 1px 9px #800000;
+    box-shadow:1px 1px 9px green;
     font-family: "Kristen ITC", sans-serif;
 }
 .popUpWindow ul {
@@ -296,21 +305,26 @@ footer {
 
 /*  */
 #examButton {
-    background-color: indigo;
+    background-color: rgba(0, 137, 255,1);
 }
 
 /*  */
 #assignmentButton {
     background-color: darkolivegreen;
+
 }
 
 #addTask {
-
 }
 
 #calendarButton, #busyDayButton, #examButton, #assignmentButton {
     cursor: pointer;
 }
+#calendarButton
+{
+    border-style: none;
+}
+
 
 /* weekly table design */
 #weeklyTable {
@@ -318,7 +332,7 @@ footer {
     height: 100%;
     font-family: Algerian, sans-serif;
     text-align: center;
-    box-shadow:2px 2px 25px #2E2C80;
+    box-shadow:2px 2px 25px rgba(0, 137, 255,1);
     border-radius: 12px 14px 12px 14px;
 }
 #weeklyTableBody {
@@ -335,14 +349,24 @@ footer {
     height: 480px;
     text-align: center;
     font: 25px arial Impact bold;
-    color: purple;
+    color: rgba(0, 137, 255,1);
     box-shadow: 10px 10px 5px #888888;
-    border: 2px solid #1C1880;
+    border: 2px solid rgba(0, 137, 255,1);
 }
 #textArea {
     resize: none;
     width: 300px;
     height: 50px;
+}
+#submitButton
+{
+    color: limegreen;
+    background: none;
+    font-weight: bold;
+    font-family: "League-Gothic", Courier, sans-serif;
+    font-size: 20px;
+    text-decoration: underline;
+    border-color: limegreen;
 }
 input[type=number] {
     width:50px;
@@ -350,18 +374,18 @@ input[type=number] {
 input[type=date], input[type=text], input[type=number], button[type=button], #textArea, select{
     font-family:  Sansation,Arial, sans-serif;
     font-size: 17px;
-    border:1px solid #1C1880;
+    border:1px solid rgba(0, 137, 255,1);
 }
 thead {
     font-size: 28px;
 }
 fieldset {
-    border: 1px solid #1C1880;
+    border: 1px solid rgba(0, 137, 255,1);
 }
 legend {
     padding: 0.2em 0.5em;
-    border: 2px solid #1C1880;
-    color: #1C1880;
+    border: 2px solid rgba(0, 137, 255,1);
+    color: rgba(0, 137, 255,1);
     font-size: 24px;
     text-align: center;
     font-variant: small-caps;
@@ -379,9 +403,14 @@ tr:nth-child(even) {
 
 #mainSectionList h3 {
     display: inline;
+    margin-right: 20px;
 }
 
-#mainSectionList button {
+#mainSectionList button  {
     display: inline;
-    margin-left: 28px;
+    color: #7CACDE;
+    background: none;
+    font-weight: bold;
+    font-family: "League-Gothic", Courier, sans-serif;
+    font-size: 20px;
 }
