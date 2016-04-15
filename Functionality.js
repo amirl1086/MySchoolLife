@@ -2,9 +2,6 @@
 
 //globals
 var stuOrg; //the main object which will be stored
-var months = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 //on page done loading
 $(document).ready(function() {
@@ -14,6 +11,7 @@ $(document).ready(function() {
     //loading some text
     $("header").text("My School Life");
     $("title").text("My School Life");
+    $("footer").html("<h3>&copy 2016 All rights reserved to Amir Lavi & Oron Sason</h3>");
 
     $("body").click(function(e) {
         if(e.target.id != "calendarButton" && e.target.className != "slideMenu" &&
@@ -50,10 +48,10 @@ $(document).ready(function() {
 
     //setting up the some more text
     var navBarButtons = $(".navigationButton");
-    $(".navigationButtonLeft").text("Home");
-    $(".navigationButtonRight").text("Add New Assignment");
-    navBarButtons[0].innerText = "Add New Class";
-    navBarButtons[1].innerText = "Add New Exam";
+    navBarButtons[0].innerText = "Home";
+    navBarButtons[1].innerText = "Add New Class";
+    navBarButtons[2].innerText = "Add New Exam";
+    navBarButtons[3].innerText = "Add New Assignment";
     var menuBarButtons = $(".slideMenuButton");
     menuBarButtons[0].innerText = "Weekly Schedule";
     menuBarButtons[1].innerText = "Assignments List";
@@ -65,7 +63,6 @@ $(document).ready(function() {
     loadCalendar();
     loadTodayPlan();
     loadLog("");
-    $("footer").html("<h3>&copy 2016 All rights reserved to Amir Lavi & Oron Sason</h3>");
 });
 
 //load previous saved data, if any
@@ -115,48 +112,72 @@ function switchContent(e) {
     //activate a function according to the button clicked
     switch (buttonClicked) {
         case "Weekly Schedule":
+        {
             loadWeeklySchedule();
             break;
+        }
         case "Assignments List":
-        //function loadList(list, title, id, style, format) {
-            if(!(displayedList = loadList(stuOrg.assignments, "Assignments", "",  "full")).length)
+        {
+            //function loadList(list, title, id, style, format) {
+            if (!(displayedList = loadList(stuOrg.assignments, "Assignments", "", "full")).length) {
                 loadLog("No Assignments to display");
+                loadCalendar();
+            }
             else {
                 mainSection.html(displayedList);
                 applyEditingTasks();
             }
             break;
+        }
         case "Exams List":
-            if(!(displayedList = loadList(stuOrg.exams, "Exams", "",  "full")).length)
+        {
+            if (!(displayedList = loadList(stuOrg.exams, "Exams", "", "full")).length) {
                 loadLog("No Exams to display");
+                loadCalendar();
+            }
             else {
                 mainSection.html(displayedList);
                 applyEditingTasks();
             }
             break;
+        }
         case "Classes List":
-            if(!(displayedList = loadList(stuOrg.classes, "Classes", "",  "full")).length)
-                loadLog("No classes to display");
+        {
+            if (!(displayedList = loadList(stuOrg.classes, "Classes", "", "full")).length) {
+                loadLog("No Classes to display");
+                loadCalendar();
+            }
             else {
                 mainSection.html(displayedList);
                 applyEditingTasks();
             }
             break;
+        }
         case "Home":
+        {
             loadCalendar();
             break;
+        }
         case "Add New Assignment":
+        {
             loadAddAssignment(null);
             break;
+        }
         case "Add New Exam":
+        {
             loadAddExam(null);
             break;
+        }
         case "Add New Class":
+        {
             loadAddClass();
             break;
+        }
         case "Delete History":
+        {
             deleteStorage();
             break;
+        }
     }
 }
 
@@ -257,7 +278,8 @@ function changeMonth() {
 function loadWeeklySchedule() {
     var i, j, k = 0, m;
     if (!stuOrg.classes.length) {
-        loadLog("No classes to display");
+        loadLog("No Classes to display");
+        loadCalendar();
         return;
     }
     $(".mainSection").html("<table id='weeklyTable' border='4' width='100%' cellspacing='5'>" +
@@ -295,7 +317,7 @@ function loadWeeklySchedule() {
 
         //find the row by the start time of the class
         var row = tableBody[0].childNodes[1];
-        for (k = 8; row.firstElementChild.innerText.charAt(0) != startTime.hours.toString().charAt(0); k++) {
+        for (k = 8; parseInt(row.firstElementChild.innerText) != startTime.hours; k++) {
             row = row.nextElementSibling;
         }
 
@@ -305,23 +327,58 @@ function loadWeeklySchedule() {
             tempTableCell = tempTableCell.nextElementSibling;
 
         //put the value
-        tempTableCell.innerHTML = stuOrg.classes[i].name + "<br>" +stuOrg.classes[i].startTime + " - " + stuOrg.classes[i].endTime;
-
-        //go to below cells if necessary
-        for(m = startTime.hours; m < endTime.hours - 1; m++) {
-            row = row.nextElementSibling;
-            tempTableCell = row.firstElementChild;
-            for(k = 0; k < j; k++)
-                tempTableCell = tempTableCell.nextElementSibling;
-            tempTableCell.innerText = stuOrg.classes[i].name;
+        if(tempTableCell.innerHTML != "") {
+            if(tempTableCell.style.backgroundColor == "cornflowerblue") {
+                tempTableCell.innerHTML += ", " + stuOrg.classes[i].name + "<br>" +stuOrg.classes[i].startTime + " - " + stuOrg.classes[i].endTime;
+            }
+            else {
+                tempTableCell.innerHTML += ",<br>Overlapping: " + stuOrg.classes[i].name + "<br>" +stuOrg.classes[i].startTime + " - " + stuOrg.classes[i].endTime;
+                tempTableCell.style.backgroundColor = "cornflowerblue";
+            }
+        }
+        else {
+            tempTableCell.innerHTML = stuOrg.classes[i].name + "<br>" +stuOrg.classes[i].startTime + " - " + stuOrg.classes[i].endTime;
         }
 
-        if(endTime.minutes > 0) {
-            row = row.nextElementSibling;
-            tempTableCell = row.firstElementChild;
-            for (k = 0; k < j; k++)
-                tempTableCell = tempTableCell.nextElementSibling;
-            tempTableCell.innerText = stuOrg.classes[i].name;
+        //go to below cells if necessary
+        if(startTime.hours < endTime.hours) {
+            for(m = startTime.hours; m < endTime.hours - 1; m++) {
+                row = row.nextElementSibling;
+                tempTableCell = row.firstElementChild;
+                for(k = 0; k < j; k++)
+                    tempTableCell = tempTableCell.nextElementSibling;
+                if(tempTableCell.innerHTML != "") {
+                    if(tempTableCell.style.backgroundColor == "cornflowerblue") {
+                        tempTableCell.innerHTML += ", " + stuOrg.classes[i].name;
+                    }
+                    else {
+                        tempTableCell.innerHTML += ",<br>Overlapping: " + stuOrg.classes[i].name;
+                        tempTableCell.style.backgroundColor = "cornflowerblue";
+                    }
+                }
+                else {
+                    tempTableCell.innerHTML = stuOrg.classes[i].name;
+                }
+            }
+            //check if there is a need to add more rows
+            if(endTime.minutes > 0) {
+                row = row.nextElementSibling;
+                tempTableCell = row.firstElementChild;
+                for (k = 0; k < j; k++)
+                    tempTableCell = tempTableCell.nextElementSibling;
+                if(tempTableCell.innerHTML != "") {
+                    if(tempTableCell.style.backgroundColor == "cornflowerblue") {
+                        tempTableCell.innerHTML += ", " + stuOrg.classes[i].name;
+                    }
+                    else {
+                        tempTableCell.innerHTML += ",<br>Overlapping: " + stuOrg.classes[i].name;
+                        tempTableCell.style.backgroundColor = "cornflowerblue";
+                    }
+                }
+                else {
+                    tempTableCell.innerHTML = stuOrg.classes[i].name;
+                }
+            }
         }
     }
 }
@@ -398,9 +455,9 @@ function loadTodayPlan() {
     }
 
     //print the assignments to hand-in in the next week
-    var monthlyAssignments = getTasksByTime(stuOrg.assignments, 7);
-    if(monthlyAssignments.length) {
-        tempText += loadList(monthlyAssignments, "Assignments", "due by the next week:", "partial");
+    var weeklyAssignments = getTasksByTime(stuOrg.assignments, 7);
+    if(weeklyAssignments.length) {
+        tempText += loadList(weeklyAssignments, "Assignments", "due by the next week:", "partial");
     }
     dailyPlanner.html(tempText);
 }
@@ -410,6 +467,11 @@ function applyEditingTasks() {
     mainSection.find("ul").attr("id", "mainSectionList");
     var index = 0;
     mainSection.find("li").each(function () {
+        var temp = $(this).text().split(',');
+        temp[3] = "</br>" + temp[3];
+        temp = temp.join();
+        temp = "<h3>" + temp + "</h3>";
+        $(this).html(temp);
         $(this).append($("<button />").click(function(e){
             editTask(e);
         }).text("EDIT").attr("id", index));
@@ -436,7 +498,7 @@ function editTask(e) {
 
 function removeTask(e) {
     var res = confirm("Are you sure?\nThis task will be deleted");
-    if (res) {
+        if (res) {
         var index = parseInt(e.target.id);
         var listPresented = $("#mainSectionList")[0].firstElementChild.innerHTML;
         if(listPresented == "Exams") {
@@ -451,9 +513,9 @@ function removeTask(e) {
             stuOrg.classes.splice(index, 1);
             loadLog("Class deleted successfully");
         }
+        loadCalendar();
+        localStorage.setItem('stuOrg', JSON.stringify(stuOrg));
     }
-    localStorage.setItem('stuOrg', JSON.stringify(stuOrg));
-    loadCalendar();
     loadTodayPlan();
 }
 
@@ -461,7 +523,7 @@ function removeTask(e) {
 function deleteStorage() {
     var res = confirm("Are you sure?\nAll your data will be deleted!");
     if (res) {
-        localStorage.removeItem("stuOrg");
+        localStorage.removeItem('stuOrg');
         loadData();
     }
     loadCalendar();
@@ -497,18 +559,16 @@ function addTask(type, item) {
 }
 
 //
-function getTasksByDate(list, thisDate)
-{
-    if(!list.length) {
+function getTasksByDate(list, thisDate) {
+    if(!list.length)
         return [];
-    }
     var dailyTasks = [], otherDate;
     for(var i = 0; i < list.length; i++) {
         otherDate = new Date(list[i].dDay);
         if(thisDate.getMonth() == otherDate.getMonth() &&
             thisDate.getDate() == otherDate.getDate() &&
             thisDate.getFullYear() == otherDate.getFullYear()) {
-            dailyTasks.unshift(list[i]);
+                dailyTasks.unshift(list[i]);
         }
     }
     if(dailyTasks.length) {
@@ -544,7 +604,7 @@ function getTasksByTime(list, range) {
     var monthlyTasks = [];
 
     for(var i = 0; i < list.length; i++) {
-        if (list[i].dDay > today && list[i].dDay < todayPlusRange)
+        if (list[i].dDay >= today && list[i].dDay < todayPlusRange)
             monthlyTasks.push(list[i]);
     }
     return monthlyTasks;
@@ -565,7 +625,6 @@ function sortTasksByDate(list) {
 
 //create a table as an element
 function createTable(numOfRows, numOfColumns, section) {
-
     var tableRows = $("#" + section); //get the table body id
     for(var i = 0; i < numOfRows; i++)
         tableRows.append(createTableRow(numOfColumns));
@@ -579,58 +638,3 @@ function createTableRow(length) {
         newRow.insertCell(i);
     return newRow;
 }
-
-//
-function tester() {
-    var c1 = new Class("Polynomials", 0, new Time(8, 0), new Time(10, 0), "des: Hassin");
-
-
-    var c2 = new Class("Operation Systems", 0, new Time(11, 0), new Time(15, 0), "des: Miri");
-
-    var c3 = new Class("Computers communication", 1, new Time(15, 0), new Time(18, 0), "des: Axman");
-    var c4 = new Class("Linear Algebra", 0, new Time(16, 30), new Time(20, 30), "des: Oshrit");
-    var c5 = new Class("Discrete Math", 2, new Time(10, 0), new Time(14, 0), "des: Yoav");
-    var c6 = new Class("ODD", 2, new Time(10, 0), new Time(14, 0), "des: Axman");
-    var c7 = new Class("C/CPP", 2, new Time(8, 0), new Time(9, 5), "des: Assaf");
-    var c8 = new Class("Software Engineering", 3, new Time(9, 30), new Time(11, 30), "des: Rubi");
-    var c9 = new Class("Distributed systems", 3, new Time(11, 45), new Time(15, 5), "des: Axman");
-    var c10 = new Class("Calculus", 4, new Time(8, 0), new Time(14, 40), "des: Hagit");
-    var c11 = new Class("Math to engineers", 5, new Time(10, 0), new Time(14, 0), "des: Hagit");
-
-    addTask("class", c1);
-    addTask("class", c2);
-    addTask("class", c3);
-    addTask("class", c11);
-    addTask("class", c5);
-    addTask("class", c6);
-    addTask("class", c7);
-    addTask("class", c8);
-    addTask("class", c9);
-    addTask("class", c10);
-    addTask("class", c4);
-
-    var a1 = new Assignment("poly - ex2", new Date(2016, 0, 0), new Time(17, 0), "Very important test");
-    var a2 = new Assignment("OS - ex12", new Date(2016, 1, 1), new Time(10, 0), "Kinda important test");
-    var a3 = new Assignment("C. Communication - ex1", new Date(2016, 2, 2), new Time(13, 0), "Just important test");
-    var a4 = new Assignment("Lin Algebra - ex6", new Date(2015, 4, 3), new Time(9, 30), "Medium important test");
-    var a5 = new Assignment("Dis math - ex4", new Date(2014, 5, 16), new Time(11, 0), "important test");
-
-    addTask("assignment", a1);
-    addTask("assignment", a2);
-    addTask("assignment", a3);
-    addTask("assignment", a4);
-    addTask("assignment", a5);
-
-    var e1 = new Exam("Poly - exam", new Date(2013, 5, 2), new Time(13, 30), 90, "pretty good");
-    var e2 = new Exam("OS - exam", new Date(2014, 5, 6), new Time(8, 0), 60, "not very good");
-    var e3 = new Exam("CC - exam", new Date(2015, 10, 16), new Time(16, 0), 0, "very bad");
-    var e4 = new Exam("LA - exam", new Date(2017, 6, 20), new Time(20, 0), 40, "medium minus");
-    var e5 = new Exam("DM - exam", new Date(2018, 11, 2), new Time(11, 30), 80, "good");
-
-    addTask("exam", e1);
-    addTask("exam", e2);
-    addTask("exam", e3);
-    addTask("exam", e4);
-    addTask("exam", e5);
-}
-

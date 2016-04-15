@@ -22,7 +22,7 @@ body {
 
 /* the header box */
 header {
-    width: 90%;
+    width: 70%;
     height: 100px;
     margin: 8px auto 15px auto;
     box-shadow: 1px 1px 25px #7075FF;
@@ -30,47 +30,30 @@ header {
     background-color: lightcyan;
     text-align: center;
     font-family: 'Goudy Old Style', Garamond, 'Big Caslon', 'Times New Roman', serif;
-    font-size: 76px;
+    font-size: 80px;
     font-weight: bold;
-    color: rgba(0, 137, 255,1);
+    color: indigo;
     font-style: oblique;
-    font-variant: small-caps;
-    letter-spacing: 4px;
 }
 
 /* navigation bar and buttons design */
 .navigationBar {
-    width: 68%;
+    width: 69%;
     height: 70px;
     display: inline;
     float: left;
     margin-top: 10px;
     border-radius: 50px 50px 50px 50px;
     border: solid;
-    background-color: rgba(0, 137, 255, 1);
+    background-color: lightskyblue;
     color: rgba(0, 137, 255, 1);
     box-shadow: 5px 1px 10px #000000;
 
 }
 .navigationButton {
-    padding: 10px 5px 10px 5px;
-    width: 100px;
-    border-radius: 50px 50px 50px 50px;
-}
-.navigationButtonLeft {
+    padding: 10px 6px 10px 5px;
     width: 120px;
-    margin: 3px 7px 3px 18px;
-    padding: 10px 5px 10px 15px;
     border-radius: 50px 50px 50px 50px;
-
-}
-.navigationButtonRight {
-    width: 140px;
-    margin: 3px 7px 3px 7px;
-    padding: 10px 15px 10px 5px;
-    border-radius: 50px 50px 50px 50px;
-}
-.navigationButton, .navigationButtonLeft, .navigationButtonRight {
     height: 34px;
     margin: 6px 7px 3px 14px;
     display: inline-block;
@@ -83,9 +66,9 @@ header {
     text-shadow: 1px 1px 1px #7CACDE;
     box-shadow: 1px 1px 10px #000000;
     border: 2px solid #3866A3;
-    background: #72EE97;
+    background: peachpuff;
 }
-.navigationButton:hover, .navigationButtonLeft:hover, .navigationButtonRight:hover {
+.navigationButton:hover {
     cursor: pointer;
     color: #14396A;
     background: #7ECFBF;
@@ -144,10 +127,10 @@ header {
 
 /* the months changing arrows and the calendar box */
 #prevMonth {
-    background: url("misc/arrow-green-left .png") no-repeat center;
+    background: url("misc/arrow-green-left.png") no-repeat center;
 }
 #nextMonth {
-    background: url("misc/arrow-green-right .png") no-repeat center;
+    background: url("misc/arrow-green-right.png") no-repeat center;
 }
 #prevMonth, #nextMonth {
     width: 7%;
@@ -168,7 +151,6 @@ header {
     border-collapse: collapse; border-spacing: 0;
 }
 #calendarTable {
-
     width: 100%;
     height: 520px;
     font-family: Impact, sans serif;
@@ -241,20 +223,20 @@ header {
 }
 .log, .todayPlan {
     box-shadow: rgba(0, 137, 255,1);
-    border: rgba(0, 137, 255,1);
-    border-style: double;
+    border: rgba(0, 137, 255,1) double;
     background-color: lightgrey;
     overflow: auto;
-    border-radius: 35px 35px 35px 35px;
+    border-radius: 35px 3px 3px 35px;
     margin-left: 10px;
 }
 
 /* the footer box */
 footer {
     width: 90%;
-    height: 90px;
-    margin: 20px auto 20px auto;
+    height: 60px;
+    margin: 32px auto 20px auto;
     font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
+    font-size: 25px;
 }
 
 /* Pop Up Window design */
@@ -315,6 +297,7 @@ footer {
 }
 
 #addTask {
+
 }
 
 #calendarButton, #busyDayButton, #examButton, #assignmentButton {
@@ -330,7 +313,7 @@ footer {
 #weeklyTable {
     width: 100%;
     height: 100%;
-    font-family: Algerian, sans-serif;
+    font-family: fantasy, sans-serif;
     text-align: center;
     box-shadow:2px 2px 25px rgba(0, 137, 255,1);
     border-radius: 12px 14px 12px 14px;
@@ -349,24 +332,21 @@ footer {
     height: 480px;
     text-align: center;
     font: 25px arial Impact bold;
-    color: rgba(0, 137, 255,1);
+    color: navy;
     box-shadow: 10px 10px 5px #888888;
-    border: 2px solid rgba(0, 137, 255,1);
+    border: 2px groove darkblue;
 }
 #textArea {
     resize: none;
     width: 300px;
     height: 50px;
 }
-#submitButton
-{
-    color: limegreen;
+#submitButton, #cancelButton {
     background: none;
     font-weight: bold;
     font-family: "League-Gothic", Courier, sans-serif;
     font-size: 20px;
     text-decoration: underline;
-    border-color: limegreen;
 }
 input[type=number] {
     width:50px;
@@ -374,24 +354,30 @@ input[type=number] {
 input[type=date], input[type=text], input[type=number], button[type=button], #textArea, select{
     font-family:  Sansation,Arial, sans-serif;
     font-size: 17px;
-    border:1px solid rgba(0, 137, 255,1);
+    //border:1px solid rgba(0, 137, 255,1);
 }
 thead {
     font-size: 28px;
 }
 fieldset {
-    border: 1px solid rgba(0, 137, 255,1);
+    //border: 1px solid rgba(0, 137, 255,1);
 }
 legend {
     padding: 0.2em 0.5em;
-    border: 2px solid rgba(0, 137, 255,1);
-    color: rgba(0, 137, 255,1);
     font-size: 24px;
     text-align: center;
     font-variant: small-caps;
 }
 tr:nth-child(even) {
     background-color: #f2f2f2
+}
+
+#mainSectionList {
+    padding: 1px 40px 40px 40px;
+    border: solid 2px #63B8EE;
+    box-shadow: #3866A3 2px 2px 2px 2px;
+    border-radius: 10px 15px 10px 15px;
+    background-color: ghostwhite;
 }
 
 #mainSectionList h1 {
@@ -402,15 +388,26 @@ tr:nth-child(even) {
 }
 
 #mainSectionList h3 {
-    display: inline;
     margin-right: 20px;
+    font-family: monospace;
+    font-size: 20px;
 }
 
-#mainSectionList button  {
-    display: inline;
-    color: #7CACDE;
-    background: none;
+#mainSectionList button {
+    display: inline-block;
+    color: indigo;
+    border-radius: 10px 15px 10px 15px;
     font-weight: bold;
     font-family: "League-Gothic", Courier, sans-serif;
     font-size: 20px;
+}
+
+#mainSectionList li{
+    margin: 5px auto 5px auto;
+    padding-left: 10px;
+    border: solid 2px #63B8EE;
+    box-shadow: #3866A3 2px 2px 2px 2px;
+    border-radius: 10px 15px 10px 15px;
+    background-color: blanchedalmond;
+    display: -webkit-inline-box;
 }

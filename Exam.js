@@ -1,7 +1,10 @@
 //Exam Object
 function Exam(name, dDay, time, description) {
     this.name = name;
-    this.dDay = (new Date(dDay)).getTime();
+    this.dDay = new Date(dDay)
+    this.dDay.setHours(time.hours);
+    this.dDay.setMinutes(time.minutes);
+    this.dDay = this.dDay.getTime();
     this.examTime = time;
     this.description = description;
 }
@@ -21,7 +24,8 @@ Exam.prototype = {
         var tempDate = new Date(this.dDay);
         return this.name + ", Taking place on: " +
             months[tempDate.getMonth()] + "-" + tempDate.getDate() +
-            "-" + tempDate.getFullYear() + ", " + this.examTime;
+            "-" + tempDate.getFullYear() + ", " + this.examTime +
+            ", Description: " + this.description;
     },
     
     dailyToString: function() {
@@ -56,9 +60,17 @@ function loadEditExam(examToEdit, index) {
     $("#numberInputHours")[0].defaultValue = examToEdit.examTime.hours;
     $("#numberInputMinutes")[0].defaultValue = examToEdit.examTime.minutes;
     $("#textArea")[0].defaultValue = examToEdit.description;
+
+    $("fieldset").append($("<button />").click(function(e) {
+        e.preventDefault();
+        $(".mainSection").html(loadList(stuOrg.exams, "Exams", "", "full"));
+        applyEditingTasks();
+    }).text("CANCEL").attr("id", "cancelButton"));
+
     var submitButton =  $("#submitButton")[0];
     submitButton.innerHTML = "SAVE CHANGES";
-    submitButton.onclick = function() {
+    submitButton.onclick = function(e) {
+        e.preventDefault();
         var editedExam = validateExam();
         if(editedExam) {
             stuOrg.exams[index] = editedExam;
@@ -77,7 +89,7 @@ function validateExam() {
     var examDate = form[2].value;
     var examTime = new Time(form[3].value, form[4].value);
     var description = form[5].value;
-    if (examName === "" || examDate === "" || !examTime.isTimeLegal())
+    if (examName === "" || examName.length > 60 || examDate === "" || !examTime.isTimeLegal())
         return null;
     else
         return new Exam(examName, examDate, examTime, description);
@@ -90,6 +102,6 @@ function addNewExam() {
         loadLog("Exam " + newExam.name + " added successfully");
     }
     else
-        loadLog("Missing Exam form input");
+        loadLog("Illegal Exam form input");
     loadCalendar();
 }

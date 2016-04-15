@@ -24,7 +24,8 @@ Class.prototype = {
     toString: function() {
         return this.name + ", Taking place on: " +
             days[this.dDay] + ", " +
-            this.startTime + " - " + this.endTime;
+            this.startTime + " - " + this.endTime +
+            ", Description: " + this.description;
     },
 
     dailyToString: function() {
@@ -59,9 +60,17 @@ function loadEditClass(classToEdit, index) {
     $("#endInputHours")[0].defaultValue = classToEdit.endTime.hours;
     $("#endInputMinutes")[0].defaultValue = classToEdit.endTime.minutes;
     $("#textArea")[0].defaultValue = classToEdit.description;
+
+    $("fieldset").append($("<button />").click(function(e) {
+        e.preventDefault();
+        $(".mainSection").html(loadList(stuOrg.classes, "Classes", "", "full"));
+        applyEditingTasks();
+    }).text("CANCEL").attr("id", "cancelButton"));
+    
     var submitButton =  $("#submitButton")[0];
     submitButton.innerHTML = "SAVE CHANGES";
-    submitButton.onclick = function() {
+    submitButton.onclick = function(e) {
+        e.preventDefault();
         var editedClass = validateClass();
         if(editedClass) {
             stuOrg.classes[index] = editedClass;
@@ -81,12 +90,22 @@ function validateClass() {
     var startTime = new Time(form[3].value, form[4].value);
     var endTime = new Time(form[5].value, form[6].value);
     var description = form[7].value;
-    if (className === "" || classDay === "" || !startTime.isTimeLegal() || !endTime.isTimeLegal()) {
+    if (className === "" || className.length > 60|| classDay === "" || 
+        !startTime.isTimeLegal() || !endTime.isTimeLegal() || startTime.equals(endTime) < 0) {
         return null;
     }
     else {
-        return new Class(className, getDayNumberByName(classDay), startTime, endTime, description);
+        var newClass = new Class(className, getDayNumberByName(classDay), startTime, endTime, description);
+        if(checkForOverlap(stuOrg.classes, newClass)) {
+            if (confirm("Class " + newClass.name + " is overlapping, would you like to add it nevertheless?")) {
+                return newClass;
+            }
+        }
+        else {
+            return newClass;
+        }
     }
+    return null;
 }
 
 function addNewClass() {
@@ -96,6 +115,14 @@ function addNewClass() {
         loadLog("Class " + newClass.name + " added successfully");
     }
     else
-        loadLog("Missing Class form input");
+        loadLog("Illegal Class form input");
     loadCalendar();
+}
+
+function checkForOverlap(list, item) {
+    var classesToday = getClassesByDay(list, item.dDay);
+    for(var i = 0; i < classesToday.length; i++)
+        if(item.endTime.equals(classesToday[i].startTime) > 0 || item.startTime.equals(classesToday[i].endTime) > 0)
+            return true;
+    return false;
 }

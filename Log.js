@@ -20,5 +20,4 @@ function loadLog(logMsg) {
         logText += loadList(stuOrg.log, "", "",  "full");
     }
     $(".log").html(logText);
-    loadCalendar();
 }
