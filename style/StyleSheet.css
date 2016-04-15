@@ -1,0 +1,395 @@
+/* CSS File - the design */
+/* ===================== */
+
+/* general body properties */
+body {
+    margin: auto;
+    padding: 25px;
+    background-color: lightcyan;
+}
+
+/* the website box */
+.pageWrapper {
+    width: 920px;
+    height: auto;
+    margin: auto;
+    padding: 15px;
+    box-shadow: 1px 1px 25px rgba(0, 137, 255,1);
+    border-radius: 50px 1px 50px 1px;
+    background-color: white;
+    border: 10px double rgba(0, 137, 255,1);
+}
+
+/* the header box */
+header {
+    width: 80%;
+    height: 100px;
+    margin: 8px auto 15px auto;
+    box-shadow: 1px 1px 25px #7075FF;
+    border-radius: 50px 1px 50px 1px;
+    background-color: cornsilk;
+    text-align: center;
+    font-family: 'Goudy Old Style', Garamond, 'Big Caslon', 'Times New Roman', serif;
+    font-size: 80px;
+    font-weight: bold;
+    color: indigo;
+    font-style: oblique;
+}
+
+/* navigation bar and buttons design */
+.navigationBar {
+    width: 69%;
+    height: 70px;
+    display: inline;
+    float: left;
+    margin-top: 10px;
+    border-radius: 50px 50px 50px 50px;
+    border: solid;
+    background-color: lightskyblue;
+    color: rgba(0, 137, 255, 1);
+    box-shadow: 5px 1px 10px #000000;
+
+}
+.navigationButton {
+    padding: 10px 6px 10px 5px;
+    width: 120px;
+    border-radius: 50px 50px 50px 50px;
+    height: 34px;
+    margin: 6px 7px 3px 14px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    font-family: verdana, sans-serif;
+    font-weight: bold;
+    color: #14396A;
+    font-size: 15px;
+    text-shadow: 1px 1px 1px #7CACDE;
+    box-shadow: 1px 1px 10px #000000;
+    border: 2px solid #3866A3;
+    background: peachpuff;
+}
+.navigationButton:hover {
+    cursor: pointer;
+    color: #14396A;
+    background: #7ECFBF;
+}
+
+/* drop down menu */
+.slideMenu {
+    width: 15%;
+    margin: 25px 70px 10px 10px;
+    display: inline;
+    float: right;
+}
+.slideMenuButton {
+    width: 93%;
+}
+.slideMenuButton, .slideMenu {
+    height: 35px;
+    font-family: 'trebuchet ms', sans-serif;
+    font-weight: bold;
+    color: #14396A;
+    font-size: 18px;
+    text-shadow: 3px 3px 1px #7CACDE;
+    text-align: center;
+    box-shadow: 2px 2px 2px #BEE2F9;
+    padding-top: 11px;
+    border-radius: 10px;
+    border: 2px groove #3866A3;
+    background: #63B8EE;
+    background: -ms-linear-gradient(top,  #63B8EE,  #468CCF);
+    background: -webkit-gradient(linear, left top, left bottom, from(#63B8EE), to(#468CCF));
+}
+.slideMenuButton:hover, .slideMenu:hover {
+    cursor: pointer;
+    color: #14396A;
+    background: #468CCF;
+    background: -ms-linear-gradient(top,  #468CCF,  #63B8EE);
+    background: -webkit-gradient(linear, left top, left bottom, from(#468CCF), to(#63B8EE));
+}
+.dropDown {
+    width: 180px;
+    display: none;
+    position: absolute;
+    z-index: 2;
+    margin: 75px auto auto 695px;
+    float: right;
+}
+
+/* the main section box */
+.mainSection {
+    width: 95%;
+    min-height: 520px;
+    margin: 132px auto 35px auto;
+    clear: both;
+    z-index: 1;
+}
+
+/* the months changing arrows and the calendar box */
+#prevMonth {
+    background: url("gallery/arrow-green-left.png") no-repeat center;
+}
+#nextMonth {
+    background: url("gallery/arrow-green-right.png") no-repeat center;
+}
+#prevMonth, #nextMonth {
+    width: 7%;
+    height: 500px;
+    cursor: pointer;
+}
+#days, #month, #emptyButton {
+    border-style: none;
+}
+#calendar {
+    width: 75%;
+    height: 100%;
+    text-align: center;
+    position: relative;
+    font-size: 20px;
+    box-shadow:1px 1px 25px 8px rgba(0, 137, 255, 1);
+    color: #333;
+    border-collapse: collapse; border-spacing: 0;
+}
+#calendarTable {
+    width: 100%;
+    height: 520px;
+    font-family: Impact, sans serif;
+    font-size: 20px;
+    font-variant: normal;
+    text-align: center;
+    font-weight: 500;
+    text-shadow: 2px 2px 15px;
+    border-style: none;
+
+}
+#prevMonth, #nextMonth, #calendar {
+    display: inline-block;
+    margin: 1px 11px 1px 11px;
+}
+
+/* the box below the main section */
+.lowerSection {
+    width: 88%;
+    height: 220px;
+    margin: auto;
+}
+.lowerSection h1 {
+    font-size: 24px;
+    font-family: "Javanese Text", sans-serif;
+    text-decoration: underline;
+    display: inline;
+    color:rgba(0, 137, 255,1);
+}
+.lowerSection h2 {
+    font-size: 20px;
+    font-family: Meiryo, sans-serif;
+    display: inline;
+    letter-spacing: -1px;
+    font-weight: normal;
+}
+.lowerSection h3 {
+    font-size: 21px;
+    display: inline;
+    font-weight: normal;
+}
+.lowerSection h4 {
+    margin: 8px auto 5px auto;
+    font-size: 32px;
+    font-family: "Franklin Gothic Demi Cond", sans-serif;
+    font-style: oblique;
+    text-align: center;
+    text-decoration: underline;
+    color: rgba(0, 137, 255,1);
+}
+.lowerSection li {
+    margin: -5px auto 6px auto;
+} /* daily planner*/
+.todayPlan {
+    width: 50%;
+    height: 100%;
+    margin-right: 20px;
+    display: inline-block;
+}
+.todayPlan ul {
+    margin: -8px auto 9px auto;
+}
+.todayPlan li {
+    margin: -15px auto 16px auto;
+} /* log */
+.log {
+    width: 40%;
+    height: 100%;
+    display: inline-block;
+}
+.log, .todayPlan {
+    box-shadow: rgba(0, 137, 255,1);
+    border: rgba(0, 137, 255,1) double;
+    background-color: lightgrey;
+    overflow: auto;
+    border-radius: 35px 3px 3px 35px;
+    margin-left: 10px;
+}
+
+/* the footer box */
+footer {
+    width: 90%;
+    height: 60px;
+    margin: 32px auto 20px auto;
+    font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
+    font-size: 25px;
+}
+
+/* Pop Up Window design */
+.popUpWindow {
+    width: 425px;
+    height: 265px;
+    border-radius: 50px 2px 2px 2px;
+    display: none;
+    position: fixed;
+    margin: 50px 30px 40px 126px;
+    background-color: cornsilk;
+    border: burlywood 6px double;
+    overflow: auto;
+}
+.popUpWindow h1 {
+    margin: 24px auto 2px auto;
+    padding: 10px;
+    letter-spacing: -1px;
+    font-size: 30px;
+}
+.popUpWindow h2 {
+    font: 26px lighter;
+    font-family: "Microsoft New Tai Lue", sans-serif;
+    margin-left: -25px;
+}
+.popUpWindow h3 {
+    font-size: 20px;
+    margin: 2px auto 2px auto;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.popUpWindow h1, .popUpWindow h3 {
+    box-shadow:1px 1px 9px green;
+    font-family: "Kristen ITC", sans-serif;
+}
+.popUpWindow ul {
+    padding-left: 1px;
+}
+.popUpWindow ul h1 {
+    font-size: 24px;
+}
+
+/* calendar buttons */
+#busyDayButton {
+    background-color: crimson;
+}
+#examButton {
+    background-color: rgba(0, 137, 255,1);
+}
+#assignmentButton {
+    background-color: darkolivegreen;
+}
+#calendarButton, #busyDayButton, #examButton, #assignmentButton {
+    cursor: pointer;
+}
+#calendarButton {
+    border-style: none;
+}
+
+/* weekly table design */
+#weeklyTable {
+    width: 100%;
+    height: 100%;
+    font-family: fantasy, sans-serif;
+    text-align: center;
+    box-shadow:2px 2px 25px rgba(0, 137, 255,1);
+    border-radius: 12px 14px 12px 14px;
+}
+#weeklyTableBody {
+    font-size: 17px;
+}
+
+/* design for the forms */
+.tasksForm {
+    padding: 10px;
+    margin: auto;
+    width: 60%;
+    height: 480px;
+    text-align: center;
+    font: 25px arial Impact bold;
+    color: navy;
+    box-shadow: 10px 10px 5px #888888;
+    border: 2px groove darkblue;
+}
+#textArea {
+    resize: none;
+    width: 300px;
+    height: 50px;
+}
+#submitButton, #cancelButton {
+    background: none;
+    font-weight: bold;
+    font-family: "League-Gothic", Courier, sans-serif;
+    font-size: 20px;
+    text-decoration: underline;
+}
+input[type=number] {
+    width:50px;
+}
+input[type=date], input[type=text], input[type=number], button[type=button], #textArea, select{
+    font-family:  Sansation,Arial, sans-serif;
+    font-size: 17px;
+    //border:1px solid rgba(0, 137, 255,1);
+}
+thead {
+    font-size: 28px;
+}
+fieldset {
+    //border: 1px solid rgba(0, 137, 255,1);
+}
+legend {
+    padding: 0.2em 0.5em;
+    font-size: 24px;
+    text-align: center;
+    font-variant: small-caps;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+/* the main section lists*/
+#mainSectionList {
+    padding: 1px 40px 40px 40px;
+    border: solid 2px #63B8EE;
+    box-shadow: #3866A3 2px 2px 2px 2px;
+    border-radius: 10px 15px 10px 15px;
+    background-color: ghostwhite;
+}
+#mainSectionList h1 {
+    font-family: "League-Gothic", Courier, sans-serif;
+    font-size: 52px; text-transform: uppercase;
+    color: #222;
+    text-shadow: 1px 2px 3px #666;
+}
+#mainSectionList h3 {
+    margin-right: 20px;
+    font-family: monospace;
+    font-size: 20px;
+}
+#mainSectionList button {
+    display: inline-block;
+    color: indigo;
+    border-radius: 10px 15px 10px 15px;
+    font-weight: bold;
+    font-family: "League-Gothic", Courier, sans-serif;
+    font-size: 20px;
+}
+#mainSectionList li{
+    margin: 5px auto 5px auto;
+    padding-left: 10px;
+    border: solid 2px #63B8EE;
+    box-shadow: #3866A3 2px 2px 2px 2px;
+    border-radius: 10px 15px 10px 15px;
+    background-color: blanchedalmond;
+    display: -webkit-inline-box;
+}
